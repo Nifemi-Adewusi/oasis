@@ -3,12 +3,14 @@ import Link from "next/link";
 import backgroundImage from "@/public/bg.png";
 export default function Page() {
   return (
-    <main className="mt-24">
+    <main className="mt-24 ">
       <Image
         src={backgroundImage}
         alt="Mountains and forests with two cabins"
         fill
-        className="object-cover"
+        className="object-cover object-top"
+        placeholder="blur"
+        quality={80}
       />
 
       <div className="relative z-10 text-center">

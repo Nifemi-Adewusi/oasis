@@ -1,3 +1,7 @@
+"use client";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+
 import Link from "next/link";
 
 const navItems = [
@@ -17,6 +21,7 @@ const navItems = [
 ];
 
 export default function Navigation() {
+  const pathName = usePathname();
   return (
     <nav className="z-10  text-xl">
       <ul className="flex justify-center md:justify-start md:gap-16 gap-6 mt-5 md:mt-0 items-center max-sm:text-sm">
@@ -24,7 +29,10 @@ export default function Navigation() {
           return (
             <li key={navItem.pageName}>
               <Link
-                className="hover:text-accent-400 transition-colors"
+                className={clsx(
+                  "hover:text-accent-400 transition-colors",
+                  pathName.startsWith(navItem.pageRoute) && "text-accent-400",
+                )}
                 href={navItem.pageRoute}
               >
                 {navItem.pageName}

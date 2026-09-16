@@ -1,4 +1,5 @@
-import { UsersIcon } from "@heroicons/react/24/solid";
+// import { UsersIcon } from "@heroicons/react/24/solid";
+import { Users } from "heroicons-react";
 
 function CabinCard({ cabin }) {
   const { id, name, maxCapacity, regularPrice, discount, image } = cabin;
@@ -18,7 +19,7 @@ function CabinCard({ cabin }) {
           </h3>
 
           <div className="flex gap-3 items-center mb-2">
-            <UsersIcon className="h-5 w-5 text-primary-600" />
+            <Users className="h-5 w-5 text-primary-600" />
             <p className="text-lg text-primary-200">
               For up to <span className="font-bold">{maxCapacity}</span> guests
             </p>
