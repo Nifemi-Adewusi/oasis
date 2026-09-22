@@ -4,9 +4,20 @@ import Image from "next/image";
 
 // PLACEHOLDER DATA
 
+export async function generateMetadata({ params }) {
+  const { id } = params;
+  const cabinData = await getCabin(id);
+  return {
+    title: `Cabin - ${cabinData.name}`,
+    description: `Cabin ${cabinData.name} has a maximum capacity of ${cabinData.maxCapacity} and the regular price is ${cabinData.regularPrice} ${cabinData.discount === 0 ? "And has no discount" : `Has a discount of ${cabinData.discount}`}`,
+    // description:
+  };
+}
+
 export default async function Page({ params }) {
   const cabinId = params.id;
   const cabin = await getCabin(cabinId);
+  // console.log(cabin);
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
     cabin;
 
