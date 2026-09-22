@@ -1,6 +1,9 @@
 import UpdateProfileForm from "@/app/_components/UpdateProfileForm";
 import { getCountries } from "@/app/_lib/data-service";
 
+export const metadata = {
+  title: "Update Profile",
+};
 export default async function Page() {
   // CHANGE
 

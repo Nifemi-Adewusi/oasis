@@ -1,16 +1,20 @@
-// import { UsersIcon } from "@heroicons/react/24/solid";
-import { Users } from "heroicons-react";
+import { UsersIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
+import Link from "next/link";
 
 function CabinCard({ cabin }) {
   const { id, name, maxCapacity, regularPrice, discount, image } = cabin;
 
   return (
-    <div className="flex border-primary-800 border">
-      <img
-        src={image}
-        alt={`Cabin ${name}`}
-        className="flex-1 border-r border-primary-800"
-      />
+    <div className="flex flex-col md:flex-row border-primary-800 border bg-primary-950 overflow-hidden">
+      <div className="relative h-56 md:h-auto md:flex-1">
+        <Image
+          src={image}
+          fill
+          alt={`Cabin ${name}`}
+          className="object-cover border-b md:border-b-0 md:border-r border-primary-800"
+        />
+      </div>
 
       <div className="flex-grow">
         <div className="pt-5 pb-4 px-7 bg-primary-950">
@@ -19,7 +23,7 @@ function CabinCard({ cabin }) {
           </h3>
 
           <div className="flex gap-3 items-center mb-2">
-            <Users className="h-5 w-5 text-primary-600" />
+            <UsersIcon className="h-5 w-5 text-primary-600" />
             <p className="text-lg text-primary-200">
               For up to <span className="font-bold">{maxCapacity}</span> guests
             </p>
@@ -43,12 +47,12 @@ function CabinCard({ cabin }) {
         </div>
 
         <div className="bg-primary-950 border-t border-t-primary-800 text-right">
-          <a
-            href={`/cabins/${id}`}
+          <Link
+            href={`/cabin/${id}`}
             className="border-l border-primary-800 py-4 px-6 inline-block hover:bg-accent-600 transition-all hover:text-primary-900"
           >
             Details & reservation &rarr;
-          </a>
+          </Link>
         </div>
       </div>
     </div>
