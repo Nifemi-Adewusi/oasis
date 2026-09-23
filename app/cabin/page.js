@@ -1,7 +1,13 @@
+/* eslint-disable react/no-unescaped-entities */
 import { Suspense } from "react";
 
 import SpinnerMini from "../_components/SpinnerMini";
 import CabinList from "../_components/CabinList";
+
+// export const revalidate = 10;
+export const metadata = {
+  title: "Cabins",
+};
 
 export default function Page() {
   // CHANGE
