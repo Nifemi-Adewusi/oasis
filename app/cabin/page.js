@@ -1,15 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Suspense } from "react";
 
-import SpinnerMini from "../_components/SpinnerMini";
+// import SpinnerMini from "../_components/SpinnerMini";
 import CabinList from "../_components/CabinList";
+import Spinner from "../_components/Spinner";
+import Filter from "../_components/filter";
 
 // export const revalidate = 10;
 export const metadata = {
   title: "Cabins",
 };
 
-export default function Page() {
+export default function Page({ searchParams }) {
+  const filter = searchParams?.capacity ?? "all";
+  // console.log(filter);
   // CHANGE
 
   return (
@@ -25,9 +29,11 @@ export default function Page() {
         away from home. The perfect spot for a peaceful, calm vacation. Welcome
         to paradise.
       </p>
-
-      <Suspense fallback={<SpinnerMini />}>
-        <CabinList />
+      <div className="flex justify-end mb-8">
+        <Filter />
+      </div>
+      <Suspense key={filter} fallback={<Spinner />}>
+        <CabinList filter={filter} />
       </Suspense>
     </div>
   );

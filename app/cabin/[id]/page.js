@@ -1,4 +1,12 @@
-import { getCabin, getCabins } from "@/app/_lib/data-service";
+import DateSelector from "@/app/_components/DateSelector";
+import ReservationForm from "@/app/_components/ReservationForm";
+import TextExpander from "@/app/_components/TextExpander";
+import {
+  getBookedDatesByCabinId,
+  getCabin,
+  getCabins,
+  getSettings,
+} from "@/app/_lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 
@@ -22,11 +30,16 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }) {
   const cabinId = params.id;
-  const cabin = await getCabin(cabinId);
-  // console.log(cabin);
+  const [cabin, settings, cabinBookedDate] = await Promise.all([
+    getCabin(cabinId),
+    getSettings(),
+    getBookedDatesByCabinId(cabinId),
+  ]);
+
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
     cabin;
-
+  // console.log(settings);
+  // console.log(cabinBookedDate);
   return (
     <div className="max-w-6xl mx-auto mt-8">
       <div className="grid grid-cols-[3fr_4fr] gap-20 border border-primary-800 py-3 px-10 mb-24">
@@ -44,7 +57,9 @@ export default async function Page({ params }) {
             Cabin {name}
           </h3>
 
-          <p className="text-lg text-primary-300 mb-10">{description}</p>
+          <p className="text-lg text-primary-300 mb-10">
+            <TextExpander>{description}</TextExpander>
+          </p>
 
           <ul className="flex flex-col gap-4 mb-7">
             <li className="flex gap-3 items-center">
@@ -72,9 +87,13 @@ export default async function Page({ params }) {
       </div>
 
       <div>
-        <h2 className="text-5xl font-semibold text-center">
-          Reserve today. Pay on arrival.
+        <h2 className="text-5xl font-semibold text-center mb-8">
+          Reserve cabin {name} today. Pay on arrival.
         </h2>
+        <div className="grid grid-cols-2 items-center gap-10">
+          <DateSelector regularPrice={regularPrice} discount={discount} />
+          <ReservationForm maxCapacity={maxCapacity} />
+        </div>
       </div>
     </div>
   );
