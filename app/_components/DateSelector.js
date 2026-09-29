@@ -1,25 +1,30 @@
 "use client";
 import { isWithinInterval } from "date-fns";
 import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
+import "react-day-picker/style.css"; // Fixed CSS import for v10
+import { useReservationContext } from "./ReservationContext";
 
 function isAlreadyBooked(range, datesArr) {
   return (
-    range.from &&
-    range.to &&
+    range?.from &&
+    range?.to &&
     datesArr.some((date) =>
       isWithinInterval(date, { start: range.from, end: range.to }),
     )
   );
 }
 
-function DateSelector({ regularPrice, discount }) {
-  // CHANGE
-  // const regularPrice = 23;
-  // const discount = 23;
+function DateSelector({ cabin }) {
+  const { regularPrice, discount } = cabin;
+  // 1. Destructure resetRange along with range and setRange
+  const { range, setRange, resetRange } = useReservationContext();
+
+  if (range) {
+    console.log(range);
+  }
+
   const numNights = 23;
   const cabinPrice = 23;
-  const range = { from: null, to: null };
 
   // SETTINGS
   const minBookingLength = 1;
@@ -30,13 +35,15 @@ function DateSelector({ regularPrice, discount }) {
       <DayPicker
         className="pt-12 place-self-center"
         mode="range"
+        selected={range}
+        onSelect={(curRange) =>
+          setRange(curRange ?? { from: undefined, to: undefined })
+        }
         min={minBookingLength + 1}
         max={maxBookingLength}
-        fromMonth={new Date()}
-        fromDate={new Date()}
-        // toYear={new Date().getFullYear() + 5}
+        startMonth={new Date()} // 3. v10 replacement for fromMonth
+        disabled={{ before: new Date() }} // 3. v10 replacement for fromDate
         captionLayout="dropdown"
-        // numberOfMonths={2}
       />
 
       <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-[72px]">
@@ -67,10 +74,11 @@ function DateSelector({ regularPrice, discount }) {
           ) : null}
         </div>
 
-        {range.from || range.to ? (
+        {/* 4. Optional chaining + resetRange fixes the Clear button crash */}
+        {range?.from || range?.to ? (
           <button
             className="border border-primary-800 py-2 px-4 text-sm font-semibold"
-            onClick={() => resetRange()}
+            onClick={resetRange}
           >
             Clear
           </button>
