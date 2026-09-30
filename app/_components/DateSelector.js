@@ -17,10 +17,11 @@ function isAlreadyBooked(range, datesArr) {
 function DateSelector({ cabin }) {
   const { regularPrice, discount } = cabin;
   // 1. Destructure resetRange along with range and setRange
-  const { range, setRange, resetRange } = useReservationContext();
+  const { range, setRange, resetRange, setSelectedCabin } =
+    useReservationContext();
 
-  if (range) {
-    console.log(range);
+  if (range.from && range.to) {
+    setSelectedCabin(cabin.name);
   }
 
   const numNights = 23;

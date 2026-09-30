@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
 import Link from "next/link";
+import Image from "next/image";
 
 const navItems = [
   {
@@ -20,7 +21,7 @@ const navItems = [
   },
 ];
 
-export default function Navigation() {
+export default function Navigation({ session }) {
   const pathName = usePathname();
   return (
     <nav className="z-10  text-xl">
@@ -35,7 +36,17 @@ export default function Navigation() {
                 )}
                 href={navItem.pageRoute}
               >
-                {navItem.pageName}
+                {session?.user?.image && navItem.pageName === "Guest Area" ? (
+                  <Image
+                    src={session.user.image}
+                    className="rounded-full"
+                    alt=""
+                  />
+                ) : navItem.pageName !== "Guest Area" ? (
+                  navItem.pageName
+                ) : (
+                  "Guest Area"
+                )}
               </Link>
             </li>
           );
