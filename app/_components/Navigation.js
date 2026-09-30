@@ -41,6 +41,9 @@ export default function Navigation({ session }) {
                     src={session.user.image}
                     className="rounded-full"
                     alt=""
+                    width={60}
+                    height={60}
+                    referrerPolicy="no-referrer"
                   />
                 ) : navItem.pageName !== "Guest Area" ? (
                   navItem.pageName
