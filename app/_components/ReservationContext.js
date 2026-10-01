@@ -8,10 +8,12 @@ const initialState = { from: undefined, to: undefined };
 // What ensures and wraps or serves as a parent for the channel to be shared
 function ReservationProvider({ children }) {
   const [range, setRange] = useState(initialState);
+
+  const [selectedCabin, setSelectedCabin] = useState("");
   const resetRange = () => {
     setRange(initialState);
+    setSelectedCabin("");
   };
-  const [selectedCabin, setSelectedCabin] = useState("");
   return (
     <ReservationContext.Provider
       value={{ range, setRange, resetRange, selectedCabin, setSelectedCabin }}
