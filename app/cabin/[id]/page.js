@@ -1,6 +1,8 @@
 import Cabin from "@/app/_components/Cabin";
 import DateSelector from "@/app/_components/DateSelector";
+import LoginMessage from "@/app/_components/LoginMessage";
 import ReservationForm from "@/app/_components/ReservationForm";
+import { auth } from "@/app/_lib/auth";
 import {
   getBookedDatesByCabinId,
   getCabin,
@@ -37,6 +39,8 @@ export default async function Page({ params }) {
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
     cabin;
 
+  const session = await auth();
+
   return (
     <div className="max-w-6xl mx-auto mt-8">
       <Cabin cabin={cabin} />
@@ -47,7 +51,11 @@ export default async function Page({ params }) {
         </h2>
         <div className="grid grid-cols-2 items-center gap-10">
           <DateSelector cabin={cabin} />
-          <ReservationForm cabin={cabin} />
+          {session?.user ? (
+            <ReservationForm session={session} cabin={cabin} />
+          ) : (
+            <LoginMessage />
+          )}
         </div>
       </div>
     </div>
