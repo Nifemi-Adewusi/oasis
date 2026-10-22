@@ -2,6 +2,7 @@ import { eachDayOfInterval } from "date-fns";
 
 import { supabase } from "./supabase";
 import { notFound } from "next/navigation";
+import { auth } from "./auth";
 
 /////////////
 // GET
@@ -84,14 +85,14 @@ export async function getBookings(guestId) {
     .from("bookings")
     // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
     .select(
-      "id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)",
+      "id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins:Cabins(name, image)",
     )
     .eq("guestId", guestId)
     .order("startDate");
 
   if (error) {
     console.error(error);
-    throw new Error("Bookings could not get loaded");
+    throw new Error(error.message);
   }
 
   return data;
@@ -195,7 +196,7 @@ export async function updateGuest(id, updatedFields) {
 
   if (error) {
     console.error(error);
-    throw new Error("Guest could not be updated");
+    throw new Error(error.message);
   }
   return data;
 }
@@ -219,6 +220,14 @@ export async function updateBooking(id, updatedFields) {
 // DELETE
 
 export async function deleteBooking(id) {
+  const session = await auth();
+  if (!session) throw new Error("You Must be logged in to delete a booking");
+  const guestBookings = await getBookings(session.user.guestId);
+
+  const guestBookingIds = guestBookings.map((booking) => booking.id);
+  if (!guestBookingIds.includes(id))
+    throw new Error("You can only delete your own bookings");
+
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 
   if (error) {

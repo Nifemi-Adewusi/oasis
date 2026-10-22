@@ -1,13 +1,15 @@
 import UpdateProfileForm from "@/app/_components/UpdateProfileForm";
-import { getCountries } from "@/app/_lib/data-service";
+import { auth } from "@/app/_lib/auth";
+import { getCountries, getGuest } from "@/app/_lib/data-service";
 
 export const metadata = {
   title: "Update Profile",
 };
 export default async function Page() {
-  // CHANGE
+  const session = await auth();
+  const guest = await getGuest(session.user.email);
 
-  const nationality = "Nigeria";
+  // const nationality = "Nigeria";
   //   const [flag, setFlag] = useState(countryFlag);
   const countries = await getCountries();
 
@@ -22,7 +24,11 @@ export default async function Page() {
         faster and smoother. See you soon!
       </p>
 
-      <UpdateProfileForm defaultCountry={nationality} countries={countries} />
+      <UpdateProfileForm
+        guest={guest}
+        defaultCountry={guest.nationality}
+        countries={countries}
+      />
     </div>
   );
 }

@@ -10,13 +10,23 @@ function ReservationProvider({ children }) {
   const [range, setRange] = useState(initialState);
 
   const [selectedCabin, setSelectedCabin] = useState("");
+
+  const [defaultCountry, setDefaultCountry] = useState("Nigeria");
   const resetRange = () => {
     setRange(initialState);
     setSelectedCabin("");
   };
   return (
     <ReservationContext.Provider
-      value={{ range, setRange, resetRange, selectedCabin, setSelectedCabin }}
+      value={{
+        range,
+        setRange,
+        resetRange,
+        selectedCabin,
+        setSelectedCabin,
+        defaultCountry,
+        setDefaultCountry,
+      }}
     >
       {children}
     </ReservationContext.Provider>
