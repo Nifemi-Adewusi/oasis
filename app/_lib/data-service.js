@@ -236,3 +236,7 @@ export async function deleteBooking(id) {
   }
   return data;
 }
+
+// export async function updateBooking(formData) {
+//   console.log(formData);
+// }

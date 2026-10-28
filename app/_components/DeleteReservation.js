@@ -1,24 +1,17 @@
 "use client";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { useTransition } from "react";
-import { deleteBooking } from "../_lib/data-service";
-import { revalidatePath } from "next/cache";
+
 import SpinnerMini from "./SpinnerMini";
+import { deleteReservation } from "./actions";
 
 function DeleteReservation({ bookingId }) {
   const [pending, startTransition] = useTransition();
 
-  // function handleDeleteReservation (bookingId) => {
-  //   startTransition((async) => {
-  //     await deleteBooking(bookingId)
-  //   });
-  // };
   const handleDeleteReservation = () => {
-    if (confirm("Are you sure you want to delete this booking?"))
-      startTransition(async () => {
-        await deleteBooking(bookingId);
-      });
-    revalidatePath("/account/reservations");
+    if (confirm("Are you sure you want to delete this booking?")) {
+      startTransition(() => deleteReservation(bookingId));
+    }
   };
   return (
     <button
